@@ -16,8 +16,7 @@ def main():
     except Exception as e:
         print(f"An error occurred: {e}")
 
-    # Analyze the conversation after it ends
-    analysis_agent()
+    # analysis_agent()
 
 if __name__ == "__main__":
     main()

@@ -14,6 +14,8 @@ def invoke_single_chain(chat_history):
     user_input = input("Please enter your input: ")
     chat_history.append({"user": user_input})
 
+    # Check if the information is important
+
     # POST API CALL to send the query information
 
     url_add = "http://localhost:8000/addToCentralizedMemory"
@@ -52,15 +54,18 @@ def invoke_single_chain(chat_history):
     try:
         request = user_input + "\n Consider this important information as context to answer the user query: \n" + content_information
         response = model.invoke(request)
-
         print(request)
-        answer = output_parser.parse(response)
-        # POST API CALL to send the queanswer information
 
+        answer_obj = output_parser.parse(response)
+        answer = str(answer_obj.content)
+        print(answer)
+
+
+        # POST API CALL to send the queanswer information
         url_get = "http://localhost:8000/getFromCentralizedMemory"
         payload_get = {
             "query": answer,
-            "collection": "email@mail.com" 
+            "collection": "Georgy" 
         }
 
         # Make POST request to getFromCentralizedMemory
@@ -73,7 +78,7 @@ def invoke_single_chain(chat_history):
         time.sleep(delay)
         raise Exception("Failed to complete request after several retries.")
 
-    print("Bot: ", answer.content)
-    chat_history.append({"bot": answer.content})
+    print("Bot: ", answer)
+    chat_history.append({"bot": answer})
 
     return chat_history
